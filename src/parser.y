@@ -4,8 +4,13 @@
 void yyerror(const char*);
 int yylex();
 %}
+%code requires{
+
+#include<string>
+}
 %union{
-	char* str;
+	std::string* str;
+	int numI;
 }
 
 %token CLASS "class" NOCLASS "noclass"
@@ -13,9 +18,9 @@ int yylex();
 %token VOID_T "void" BYTE_T "byte" CHAR_T "char" SHORT_T "short" INT_T "int" LONG_T "long" UNSIGNED "unsigned"
 %token BOOL_T "bool" FLOAT_T "float" DOUBLE_T "double"
 %token PUBLIC_MOD "public" PRIVATE_MOD "private" STATIC_MOD "static"
-%token STRING_C "string constant"
+%token STRING_C "string constant" CHAR_C "char constant"
 %token<str> IDENT "identifier"
-
+%token<numI> INT_C "integer constant"
 %define parse.error verbose
 %start input
 
@@ -30,9 +35,9 @@ classdef:		CLASS IDENT '{' classcont '}'
 classcont:		%empty
 |			classcont fundef
 |			classcont fielddef
-|			classcont classdef
+|			classcont publicity_mod classdef
 ;
-fundef:			typeident IDENT '(' fundefargs ')' '{' '}'
+fundef:			modifiers typeident IDENT '(' fundefargs ')' '{' '}'
 ;
 fundefargs:		%empty
 |			fundefargsnotempty
@@ -42,7 +47,7 @@ fundefargsnotempty:	fundefarg
 ;
 fundefarg:		typeident IDENT
 ;
-fielddef:		typeident IDENT ';'
+fielddef:		modifiers typeident IDENT ';'
 ;
 
 typeident:		IDENT

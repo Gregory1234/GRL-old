@@ -1,5 +1,5 @@
-class Greg{
-	void main(double a){
+noclass{
+	void main(String[] args){
 		
 	}
 }

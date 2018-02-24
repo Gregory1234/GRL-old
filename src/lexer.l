@@ -27,10 +27,10 @@ void yyerror(const char*);
 "private"			return PRIVATE_MOD;
 "static"			return STATIC_MOD;
 
-[a-zA-Z_][a-zA-Z_0-9]*		{yylval.str=yytext; return IDENT;}
-[0-9]+		{yylval.str=yytext; return IDENT;}
-\".*\"				{yylval.str=std::string(yytext).substr(1,strlen(yytext)-2).c_str(); return STRING_C;}
-\'.\'				{yylval.str=yytext[1]; return CHAR_C;}
+[a-zA-Z_][a-zA-Z_0-9]*		{yylval.str=new std::string(yytext); return IDENT;}
+[0-9]+				{yylval.numI=atoi(yytext); return INT_C;}
+\".*\"				{yylval.str=new std::string(std::string(yytext).substr(1,strlen(yytext)-2)); return STRING_C;}
+\'.\'				{yylval.str=(new std::string("")+yytext[1]); return CHAR_C;}
 
 [ \t]				{}
 \n				{yylineno++;}
