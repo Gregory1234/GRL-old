@@ -1,2 +1,2 @@
-# gjll
-GJLL language
+# GRL
+GRL programming language
