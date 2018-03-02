@@ -5,8 +5,14 @@
 #include<iostream>
 #include<fstream>
 #include<stdio.h>
+#define PRE_PARSING_ERROR 1
+#define GLOBAL_FINDING_PARSER_ERROR 2
+#define PARSING_ERROR 3
+#define LEXER_ERROR 4
+#define INPUT_ERROR 5
 extern void scanFile(std::string filename);
 void yyerror(const char*);
+extern int haserrors;
 namespace GRL{
 	
 	
@@ -134,6 +140,8 @@ namespace GRL{
 				}
 				if(c==';'){
 					scanFile(line);
+					if(haserrors)
+						return;
 					line="";
 					continue;
 				}
@@ -142,6 +150,7 @@ namespace GRL{
 						continue;
 					if(line!=filename.substr(0,filename.length()-4)){
 						std::cout << "\033[1;31mpre-parsing error:\033[0m in " << filename << " line " << l << std::endl << "wrong class name error, expected " << filename.substr(0,filename.length()-4) << std::endl;
+						haserrors=PRE_PARSING_ERROR;
 					}
 				}
 				line+=c;
