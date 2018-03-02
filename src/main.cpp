@@ -8,17 +8,18 @@ extern int yylineno;
 using namespace std;
 
 string fn;
-
+extern int yydebug;
 GRL::CompilerContext context;
 
 int main(int argc,char* argv[]){
+	//yydebug=1;
 	context = GRL::CompilerContext();
 	const char* outfn;
 	for(int i = 1;i<argc;i++){
 		fn=argv[i];
 	}
-	yyin=fopen(fn.c_str(),"r");
 	context.scanForGlobals(fn);
+	yyin=fopen(fn.c_str(),"r");
 	//cout << ifstream(argv[1]).rdbuf() << endl;
 	yyparse();
 }

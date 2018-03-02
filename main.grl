@@ -1,5 +1,5 @@
 class main{
-	void main(main[] args){
+	void main(int[] args){
 		
 	}
 }

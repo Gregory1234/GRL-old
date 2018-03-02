@@ -9,6 +9,7 @@ extern GRL::CompilerContext context;
 #include<iostream>
 void yyerror(const char*);
 int yylex();
+#define YYDEBUG 1
 %}
 %code requires{
 
@@ -32,22 +33,21 @@ int yylex();
 
 %%
 
-input:			classdef
+input:			classdef END
 ;
 
-classdef:		CLASS IDENT '{' classcont '}' {
+classdef:		CLASS IDENT {
 	if(context.globalfinding) {context.addClass(GRL::Class(*$2));}
-}
+} '{' classcont '}' 
 |			NOCLASS '{' classcont '}'
 ;
 classcont:		%empty
 |			classcont fundef
 |			classcont fielddef
-|			classcont publicity_mod classdef
 ;
-fundef:			modifiers typeident IDENT '(' fundefargs ')' '{' '}' {
+fundef:			modifiers typeident IDENT '(' fundefargs ')' {
 	if(context.globalfinding) {context.addFunction(GRL::Function(*$3));}
-}
+} '{' '}' 
 ;
 fundefargs:		%empty
 |			fundefargsnotempty

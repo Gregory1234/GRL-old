@@ -118,6 +118,8 @@ namespace GRL{
 		
 		void scanForGlobals(std::string filename){
 			std::ifstream mainfs;
+
+			scanFile(filename);
 			mainfs.open(filename.c_str());
 			char c;
 			int l = 0;
