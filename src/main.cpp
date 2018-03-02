@@ -5,6 +5,7 @@
 extern FILE* yyin;
 extern int yyparse();
 extern int yylineno;
+extern void getDefault(GRL::CompilerContext&);
 using namespace std;
 
 string fn;
@@ -14,6 +15,7 @@ GRL::CompilerContext context;
 int main(int argc,char* argv[]){
 	//yydebug=1;
 	context = GRL::CompilerContext();
+	getDefault(context);
 	const char* outfn;
 	for(int i = 1;i<argc;i++){
 		fn=argv[i];
