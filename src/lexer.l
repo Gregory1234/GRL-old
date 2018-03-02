@@ -3,6 +3,7 @@
 extern int yylineno;
 #include <string>
 void yyerror(const char*);
+void lexerror(const char*);
 %}
 %option noyywrap
 %%
@@ -15,11 +16,11 @@ void yyerror(const char*);
 "void"				return VOID_T;
 ("byte"|"int8")			return BYTE_T;
 "char"				return CHAR_T;
-("int"|"int32"|"dword"|"double word")		return INT_T;
-("long"|"int64"|"qword"|"quadruple word")	return LONG_T;
 ("short"|"int16"|"word")	return SHORT_T;
+("int"|"int32"|"dword")		return INT_T;
+("long"|"int64"|"qword")	return LONG_T;
 "unsigned"			return UNSIGNED;
-("bool"|"boolen")		return BOOL_T;
+("bool"|"boolean")		return BOOL_T;
 "float"				return FLOAT_T;
 "double"			return DOUBLE_T;
 
@@ -34,6 +35,6 @@ void yyerror(const char*);
 
 [ \t]				{}
 \n				{yylineno++;}
-.				{yyerror((std::string("Unknown character encountered!")+yytext).c_str());}
+.				{lexerror((std::string("unexpected character, '")+yytext+"'").c_str());}
 
 %%

@@ -1,6 +1,12 @@
 %defines
+%code requires{
+
+#include<structure.h>
+extern GRL::CompilerContext context;
+}
 %{
 #include<string>
+#include<iostream>
 void yyerror(const char*);
 int yylex();
 %}
@@ -29,7 +35,9 @@ int yylex();
 input:			classdef
 ;
 
-classdef:		CLASS IDENT '{' classcont '}'
+classdef:		CLASS IDENT '{' classcont '}' {
+	if(context.globalfinding) {context.addClass(GRL::Class(*$2));}
+}
 |			NOCLASS '{' classcont '}'
 ;
 classcont:		%empty
@@ -37,7 +45,9 @@ classcont:		%empty
 |			classcont fielddef
 |			classcont publicity_mod classdef
 ;
-fundef:			modifiers typeident IDENT '(' fundefargs ')' '{' '}'
+fundef:			modifiers typeident IDENT '(' fundefargs ')' '{' '}' {
+	if(context.globalfinding) {context.addFunction(GRL::Function(*$3));}
+}
 ;
 fundefargs:		%empty
 |			fundefargsnotempty
@@ -50,7 +60,7 @@ fundefarg:		typeident IDENT
 fielddef:		modifiers typeident IDENT ';'
 ;
 
-typeident:		IDENT
+typeident:		IDENT			{context.getIdentifier(*$1,GRL::Identifier::CLASS);}
 |			typeident '[' ']'
 |			VOID_T
 |			BOOL_T
@@ -69,9 +79,9 @@ typeident:		IDENT
 
 modifiers:		publicity_mod other_mod
 ;
-publicity_mod:		"public"
-|			"private"
-|			%empty
+publicity_mod:		"public"	
+|			"private"	
+|			%empty		
 ;
 other_mod:		%empty
 |			other_mod "static"
