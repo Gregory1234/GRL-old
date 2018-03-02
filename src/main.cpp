@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include<fstream>
 #include<structure.h>
+#include<inputs.h>
 extern FILE* yyin;
 extern int yyparse();
 extern int yylineno;
@@ -13,16 +14,16 @@ extern int yydebug;
 GRL::CompilerContext context;
 
 int main(int argc,char* argv[]){
-	//yydebug=1;
+	GRL::input in(argc,argv);
+	if(in.debug)
+		yydebug=1;
 	context = GRL::CompilerContext();
 	getDefault(context);
-	const char* outfn;
-	for(int i = 1;i<argc;i++){
-		fn=argv[i];
-	}
+	fn = in.in;
 	context.scanForGlobals(fn);
 	yyin=fopen(fn.c_str(),"r");
 	//cout << ifstream(argv[1]).rdbuf() << endl;
+	fn = in.in;
 	yyparse();
 }
 
