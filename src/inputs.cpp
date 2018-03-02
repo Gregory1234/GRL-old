@@ -21,7 +21,7 @@ GRL::input::input(int argc,char* argv[]){
 				break;
 			default:
 				haserrors = INPUT_ERROR;
-				std::cout << "unknown flag -" << argv[i][1] << std::endl;
+				std::cout << "\033[1;31minput error\033[0m" << std::endl << "unknown flag -" << argv[i][1] << std::endl;
 				break;
 			}
 		}else{

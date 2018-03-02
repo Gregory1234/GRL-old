@@ -10,11 +10,11 @@ bin/grl: int gen $(patsubst src/%.y,int/%.o,$(wildcard src/*.y)) $(patsubst src/
 	c++ -std=c++11 -o bin/grl $(patsubst src/%.y,int/%.o,$(wildcard src/*.y)) $(patsubst src/%.l,int/%.o,$(wildcard src/*.l)) $(patsubst src/%.cpp,int/%.o,$(wildcard src/*.cpp))
 
 
-int/%.o: src/%.cpp
+int/%.o: src/%.cpp $(wildcard src/*.h)
 	c++ -std=c++11 -I src -c -o $@ $<
-int/%.o: gen/%.c
+int/%.o: gen/%.c $(patsubst src/%.y,gen/%.h,$(wildcard src/*.y)) $(wildcard src/*.h)
 	c++ -std=c++11 -I src -c -o $@ $<
-gen/%.c: src/%.l $(patsubst src/%.y,gen/%.h,$(wildcard src/*.y))
+gen/%.c: src/%.l
 	flex -o $@ $<
 gen/%.c gen/%.h: src/%.y
 	bison -d -o $@ $<

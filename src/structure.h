@@ -148,8 +148,10 @@ namespace GRL{
 				if(c=='{'){
 					if(line=="noclass")
 						continue;
-					if(line!=filename.substr(0,filename.length()-4)){
-						std::cout << "\033[1;31mpre-parsing error:\033[0m in " << filename << " line " << l << std::endl << "wrong class name error, expected " << filename.substr(0,filename.length()-4) << std::endl;
+					std::string f = filename.substr(0,filename.length()-4);
+					f=f.substr(f.rfind("/")+1,f.size());
+					if(line!=f){
+						std::cout << "\033[1;31mpre-parsing error:\033[0m in " << filename << " line " << l << std::endl << "wrong class name error, expected " << f << std::endl;
 						haserrors=PRE_PARSING_ERROR;
 					}
 				}

@@ -4,3 +4,6 @@ script:
  - make bin/grl; bin/grl main.grl
  - make bin/grl; bin/grl examples/test1.grl
  - make bin/grl; bin/grl examples/test2.grl
+ - make bin/grl; bin/grl main.grl -d
+ - make bin/grl; bin/grl examples/test1.grl -d
+ - make bin/grl; bin/grl examples/test2.grl -d
