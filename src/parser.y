@@ -70,7 +70,11 @@ fundefarg:		typeident IDENT
 fielddef:		modifiers typeident IDENT ';'
 ;
 
-typeident:		IDENT			{context.getIdentifier(*$1,GRL::Identifier::CLASS);}
+typeident:		IDENT			{if(!context.globalfinding){
+	if(context.getIdentifier(*$1,GRL::Identifier::CLASS).type==GRL::Identifier::NOTHING){
+		YYERROR;
+	}
+}}
 |			typeident '[' ']'
 |			VOID_T
 |			BOOL_T

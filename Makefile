@@ -11,9 +11,9 @@ int/%.o: src/%.cpp
 	c++ -std=c++11 -I src -c -o $@ $<
 int/%.o: gen/%.c
 	c++ -std=c++11 -I src -c -o $@ $<
-gen/%.c: src/%.l
+gen/%.c: src/%.l $(patsubst src/%.y,gen/%.h,$(wildcard src/*.y))
 	flex -o $@ $<
-gen/%.c: src/%.y
+gen/%.c gen/%.h: src/%.y
 	bison -d -o $@ $<
 
 bin:

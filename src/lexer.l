@@ -16,6 +16,8 @@ void lexerror(const char*);
 "void"				return VOID_T;
 ("byte"|"int8")			return BYTE_T;
 "char"				return CHAR_T;
+"double"[ \t]+"word"		return INT_T;
+"quadruple"[ \t]+"word"		return LONG_T;
 ("short"|"int16"|"word")	return SHORT_T;
 ("int"|"int32"|"dword")		return INT_T;
 ("long"|"int64"|"qword")	return LONG_T;
