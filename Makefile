@@ -17,7 +17,7 @@ int/%.o: gen/%.c $(patsubst src/%.y,gen/%.h,$(wildcard src/*.y)) $(wildcard src/
 gen/%.c: src/%.l
 	flex -o $@ $<
 gen/%.c gen/%.h: src/%.y
-	bison -d -o $@ $<
+	bison -d -o $(patsubst gen/%.h,gen/%.c,$@) $<
 
 bin:
 	mkdir bin
