@@ -11,7 +11,7 @@ void lexerror(const char*);
 "class"				return CLASS;
 "noclass"			return NOCLASS;
 
-("("|")"|"{"|"}"|"["|"]"|"<"|">")	return yytext[0];
+("("|")"|"{"|"}"|"["|"]"|"<"|">"|";")	return yytext[0];
 
 "void"				return VOID_T;
 ("byte"|"int8")			return BYTE_T;
@@ -31,7 +31,7 @@ void lexerror(const char*);
 [a-zA-Z_][a-zA-Z_0-9]*		{yylval.str=new std::string(yytext); return IDENT;}
 [0-9]+				{yylval.numI=atoi(yytext); return INT_C;}
 \".*\"				{yylval.str=new std::string(std::string(yytext).substr(1,strlen(yytext)-2)); return STRING_C;}
-\'.\'				{yylval.str=(new std::string("")+yytext[1]); return CHAR_C;}
+\'.\'				{yylval.numC=yytext[1]; return CHAR_C;}
 
 [ \t]				{}
 \n				{yylineno++;}

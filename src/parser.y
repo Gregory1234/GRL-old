@@ -18,6 +18,7 @@ int yylex();
 %union{
 	std::string* str;
 	int numI;
+	char numC;
 }
 
 %token CLASS "class" NOCLASS "noclass"
@@ -25,9 +26,10 @@ int yylex();
 %token VOID_T "void" BYTE_T "byte" CHAR_T "char" SHORT_T "short" INT_T "int" LONG_T "long" UNSIGNED "unsigned"
 %token BOOL_T "bool" FLOAT_T "float" DOUBLE_T "double"
 %token PUBLIC_MOD "public" PRIVATE_MOD "private" STATIC_MOD "static"
-%token STRING_C "string constant" CHAR_C "char constant"
+%token<str> STRING_C "string constant"
 %token<str> IDENT "identifier"
 %token<numI> INT_C "integer constant"
+%token<numC> CHAR_C "char constant"
 %define parse.error verbose
 %start input
 
@@ -47,13 +49,21 @@ classcont:		%empty
 ;
 fundef:			modifiers typeident IDENT '(' fundefargs ')' {
 	if(context.globalfinding) {context.addFunction(GRL::Function(*$3));}
-} '{' '}' 
+} explicitcodeblock
+;
+codeblock:		explicitcodeblock
+|			codeline
+;
+explicitcodeblock:	'{' codelines '}'
+;
+codelines:		codelines codeline
+|			codeline
 ;
 fundefargs:		%empty
-|			fundefargsnotempty
+|			noemptyfundefargs
 ;
-fundefargsnotempty:	fundefarg
-|			fundefargsnotempty ',' fundefarg
+noemptyfundefargs:	fundefarg
+|			noemptyfundefargs ',' fundefarg
 ;
 fundefarg:		typeident IDENT
 ;
@@ -85,5 +95,21 @@ publicity_mod:		"public"
 ;
 other_mod:		%empty
 |			other_mod "static"
+;
+
+codeline:		expression ';'
+;
+expression:		funcall
+|			STRING_C
+|			CHAR_C
+|			INT_C
+;
+funcall:		IDENT '(' funcallargs ')' {}
+;
+funcallargs:		noemptyfuncallargs
+|			%empty
+;
+noemptyfuncallargs:	noemptyfuncallargs ',' expression
+|			expression
 ;
 %%
