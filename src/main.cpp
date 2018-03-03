@@ -42,3 +42,7 @@ void lexerror(const char* msg){
 	cout << "\033[1;31mlexing error:\033[0m in " << fn << " line " << yylineno << endl << msg << endl;
 	haserrors=LEXER_ERROR;
 }
+void inerror(const char* msg){
+	std::cout << "\033[1;31minput error\033[0m" << std::endl << msg << std::endl;
+	haserrors = INPUT_ERROR;
+}

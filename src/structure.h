@@ -130,7 +130,6 @@ namespace GRL{
 			char c;
 			int l = 0;
 			std::string line;
-			bool islast = false;
 			while(c!='{'){
 				c=mainfs.get();
 				if(c==' '||c=='\n'||c=='\t'){
@@ -157,7 +156,6 @@ namespace GRL{
 				}
 				line+=c;
 				if(line=="class"){
-					islast=true;
 					line="";
 				}
 				if(line=="import"){
