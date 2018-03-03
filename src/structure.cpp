@@ -1,4 +1,5 @@
 #include<structure.h>
+#include<context.h>
 extern GRL::CompilerContext context;
 extern FILE* yyin;
 extern int yyparse();

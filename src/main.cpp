@@ -1,7 +1,7 @@
 #include<iostream>
 #include<stdio.h>
 #include<fstream>
-#include<structure.h>
+#include<context.h>
 #include<inputs.h>
 extern FILE* yyin;
 extern int yyparse();
