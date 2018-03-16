@@ -1,5 +1,6 @@
 %defines
 %code requires{
+#include<structure.h>
 extern GRL::CompilerContext context;
 }
 %{
