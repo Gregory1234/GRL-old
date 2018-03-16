@@ -2,7 +2,8 @@
 #define GRL_STRUCTURE_H
 #include<string>
 #include<vector>
-
+#define GRL_STAGE_COMPILING     0
+#define GRL_STAGE_GLOBALS       1
 namespace GRL{
         struct Class{
                 std::string name;
@@ -14,13 +15,18 @@ namespace GRL{
                 };
                 union{
                         primitives p;
-                        Class c;
+                        Class *c;
                 };
                 bool isPrimitive;
         };
         struct Function{
                 std::string name;
                 GRLType ret;
+        };
+        struct CompilerContext{
+                std::vector<Class> classes;
+                std::vector<Function> functions;
+                short stage = GRL_STAGE_COMPILING;
         };
 }
 

@@ -43,7 +43,7 @@ input:			classdef END
 ;
 
 classdef:		CLASS IDENT {
-	if(context.globalfinding) {context.addClass(GRL::Class(*$2));}
+	if(context.stage==GRL_STAGE_GLOBALS) {context.classes.push_back(GRL::Class(*$2));}
 } '{' classcont '}'
 |			NOCLASS '{' classcont '}'
 ;
@@ -52,8 +52,8 @@ classcont:		%empty
 |			classcont fielddef
 ;
 fundef:			modifiers typeident IDENT '(' fundefargs ')' {
-	if(context.globalfinding) {
-		context.addFunction(GRL::Function(*$3,*$2));
+	if(context.stage==GRL_STAGE_GLOBALS) {
+		context.functions.push_back(GRL::Function(*$3,*$2));
 	}
 } explicitcodeblock {$$=new GRL::Function(*$3,*$2);}
 ;
@@ -77,7 +77,7 @@ fielddef:		modifiers typeident IDENT ';'
 ;
 
 typeident:		IDENT {
-	if(!context.globalfinding){
+	if(context.stage==GRL_STAGE_COMPILING){
 		if(context.getIdentifier(*$1,GRL::Identifier::CLASS).type==GRL::Identifier::NOTHING){
 			YYERROR;
 		}
@@ -118,7 +118,7 @@ expression:		funcall
 |			INT_C
 ;
 funcall:		IDENT '(' funcallargs ')' {
-	if(!context.globalfinding){
+	if(context.stage==GRL_STAGE_COMPILING){
 		if(context.getIdentifier(*$1,GRL::Identifier::FUNCTION).type==GRL::Identifier::NOTHING){
 			YYERROR;
 		}

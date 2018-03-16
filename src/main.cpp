@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include<fstream>
 #include<inputs.h>
+#include<structure.h>
 extern FILE* yyin;
 extern int yyparse();
 extern int yylineno;
