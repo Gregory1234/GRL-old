@@ -1,6 +1,5 @@
 #include <inputs.h>
 #include <iostream>
-#include <structure.h>
 #include <string>
 extern int haserrors;
 extern void inerror(const char*);
