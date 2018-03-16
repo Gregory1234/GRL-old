@@ -30,7 +30,6 @@ int main(int argc,char* argv[]){
 	//cout << ifstream(argv[1]).rdbuf() << endl;
 	fn = in.in;
 	yyparse();
-	cout << haserrors << endl;
 	return haserrors;
 }
 

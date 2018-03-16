@@ -1,12 +1,14 @@
 %defines
 %code requires{
 
+#include<structure.h>
 #include<context.h>
 extern GRL::CompilerContext context;
 }
 %{
 #include<string>
 #include<iostream>
+#include<context.h>
 void yyerror(const char*);
 int yylex();
 #define YYDEBUG 1
@@ -16,20 +18,25 @@ int yylex();
 #include<string>
 }
 %union{
+	GRL::GRLType* type;
 	std::string* str;
 	int numI;
 	char numC;
+	GRL::Function* fun;
 }
 
 %token CLASS "class" NOCLASS "noclass"
 %token END 0 "end of file"
-%token VOID_T "void" BYTE_T "byte" CHAR_T "char" SHORT_T "short" INT_T "int" LONG_T "long" UNSIGNED "unsigned"
-%token BOOL_T "bool" FLOAT_T "float" DOUBLE_T "double"
+%token<type> VOID_T "void" BYTE_T "byte" CHAR_T "char" SHORT_T "short" INT_T "int" LONG_T "long" UNSIGNED "unsigned"
+%token<type> BOOL_T "bool" FLOAT_T "float" DOUBLE_T "double"
 %token PUBLIC_MOD "public" PRIVATE_MOD "private" STATIC_MOD "static"
 %token<str> STRING_C "string constant"
 %token<str> IDENT "identifier"
 %token<numI> INT_C "integer constant"
 %token<numC> CHAR_C "char constant"
+%type<type> typeident
+%type<fun> fundef
+%type<fun> funcall
 %define parse.error verbose
 %start input
 
@@ -40,7 +47,7 @@ input:			classdef END
 
 classdef:		CLASS IDENT {
 	if(context.globalfinding) {context.addClass(GRL::Class(*$2));}
-} '{' classcont '}' 
+} '{' classcont '}'
 |			NOCLASS '{' classcont '}'
 ;
 classcont:		%empty
@@ -48,8 +55,10 @@ classcont:		%empty
 |			classcont fielddef
 ;
 fundef:			modifiers typeident IDENT '(' fundefargs ')' {
-	if(context.globalfinding) {context.addFunction(GRL::Function(*$3));}
-} explicitcodeblock
+	if(context.globalfinding) {
+		context.addFunction(GRL::Function(*$3,*$2));
+	}
+} explicitcodeblock {$$=new GRL::Function(*$3,*$2);}
 ;
 codeblock:		explicitcodeblock
 |			codeline
@@ -70,32 +79,35 @@ fundefarg:		typeident IDENT
 fielddef:		modifiers typeident IDENT ';'
 ;
 
-typeident:		IDENT			{if(!context.globalfinding){
-	if(context.getIdentifier(*$1,GRL::Identifier::CLASS).type==GRL::Identifier::NOTHING){
-		YYERROR;
+typeident:		IDENT {
+	if(!context.globalfinding){
+		if(context.getIdentifier(*$1,GRL::Identifier::CLASS).type==GRL::Identifier::NOTHING){
+			YYERROR;
+		}
 	}
-}}
-|			typeident '[' ']'
-|			VOID_T
-|			BOOL_T
-|			FLOAT_T
-|			DOUBLE_T
-|			BYTE_T
-|			CHAR_T
-|			SHORT_T
-|			INT_T
-|			LONG_T
-|			UNSIGNED BYTE_T
-|			UNSIGNED SHORT_T
-|			UNSIGNED INT_T
-|			UNSIGNED LONG_T
+	$$=new GRL::GRLType(*$1);
+}
+|			typeident '[' ']' {$$=new GRL::GRLType(*$1);}
+|			VOID_T {$$=new GRL::GRLType(std::string("void"));}
+|			BOOL_T {$$=new GRL::GRLType(std::string("bool"));}
+|			FLOAT_T {$$=new GRL::GRLType(std::string("float"));}
+|			DOUBLE_T {$$=new GRL::GRLType(std::string("double"));}
+|			BYTE_T {$$=new GRL::GRLType(std::string("byte"));}
+|			CHAR_T {$$=new GRL::GRLType(std::string("char"));}
+|			SHORT_T {$$=new GRL::GRLType(std::string("short"));}
+|			INT_T {$$=new GRL::GRLType(std::string("int"));}
+|			LONG_T {$$=new GRL::GRLType(std::string("long"));}
+|			UNSIGNED BYTE_T {$$=new GRL::GRLType(std::string("unsigned byte"));}
+|			UNSIGNED SHORT_T {$$=new GRL::GRLType(std::string("unsigned short"));}
+|			UNSIGNED INT_T {$$=new GRL::GRLType(std::string("unsigned int"));}
+|			UNSIGNED LONG_T {$$=new GRL::GRLType(std::string("unsigned long"));}
 ;
 
 modifiers:		publicity_mod other_mod
 ;
-publicity_mod:		"public"	
-|			"private"	
-|			%empty		
+publicity_mod:		"public"
+|			"private"
+|			%empty
 ;
 other_mod:		%empty
 |			other_mod "static"
@@ -108,7 +120,14 @@ expression:		funcall
 |			CHAR_C
 |			INT_C
 ;
-funcall:		IDENT '(' funcallargs ')' {}
+funcall:		IDENT '(' funcallargs ')' {
+	if(!context.globalfinding){
+		if(context.getIdentifier(*$1,GRL::Identifier::FUNCTION).type==GRL::Identifier::NOTHING){
+			YYERROR;
+		}
+	}
+	$$=(GRL::Function*)context.getIdentifier(*$1,GRL::Identifier::FUNCTION).owner;
+}
 ;
 funcallargs:		noemptyfuncallargs
 |			%empty

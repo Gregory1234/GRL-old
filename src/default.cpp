@@ -3,6 +3,6 @@
 
 
 void getDefault(GRL::CompilerContext &c){
-	c.addFunction(GRL::Function("println"));
+	c.addFunction(GRL::Function("println",GRL::GRLType(std::string("void"))));
 	c.addClass(GRL::Class("String"));
 }

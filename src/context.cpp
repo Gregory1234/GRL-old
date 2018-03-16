@@ -1,4 +1,5 @@
 #include<context.h>
+#include<string>
 GRL::Identifier& GRL::CompilerContext::getIdentifier(std::string &name,GRL::Identifier::IdentifierType type){
 	for(auto i = locals.begin(); i != locals.end(); ++i) {
 		if(i->name==name&&i->type==type)
