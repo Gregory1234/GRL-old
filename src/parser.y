@@ -43,7 +43,9 @@ input:			classdef END
 ;
 
 classdef:		CLASS IDENT {
-	if(context.stage==GRL_STAGE_GLOBALS) {context.classes.push_back(GRL::Class(*$2));}
+	if(context.stage==GRL_STAGE_GLOBALS) {
+		context.classes.push_back(GRL::Class(*$2));
+	}
 } '{' classcont '}'
 |			NOCLASS '{' classcont '}'
 ;
@@ -78,26 +80,26 @@ fielddef:		modifiers typeident IDENT ';'
 
 typeident:		IDENT {
 	if(context.stage==GRL_STAGE_COMPILING){
-		if(context.getIdentifier(*$1,GRL::Identifier::CLASS).type==GRL::Identifier::NOTHING){
+		if(context.getIdentifier(*$1)!=GRL::IdentifierType::CLASS){
 			YYERROR;
 		}
 	}
-	$$=new GRL::GRLType(*$1);
+	$$=new GRL::GRLType(GRL::GRLType::UNDEFINED);
 }
 |			typeident '[' ']' {$$=new GRL::GRLType(*$1);}
-|			VOID_T {$$=new GRL::GRLType(std::string("void"));}
-|			BOOL_T {$$=new GRL::GRLType(std::string("bool"));}
-|			FLOAT_T {$$=new GRL::GRLType(std::string("float"));}
-|			DOUBLE_T {$$=new GRL::GRLType(std::string("double"));}
-|			BYTE_T {$$=new GRL::GRLType(std::string("byte"));}
-|			CHAR_T {$$=new GRL::GRLType(std::string("char"));}
-|			SHORT_T {$$=new GRL::GRLType(std::string("short"));}
-|			INT_T {$$=new GRL::GRLType(std::string("int"));}
-|			LONG_T {$$=new GRL::GRLType(std::string("long"));}
-|			UNSIGNED BYTE_T {$$=new GRL::GRLType(std::string("unsigned byte"));}
-|			UNSIGNED SHORT_T {$$=new GRL::GRLType(std::string("unsigned short"));}
-|			UNSIGNED INT_T {$$=new GRL::GRLType(std::string("unsigned int"));}
-|			UNSIGNED LONG_T {$$=new GRL::GRLType(std::string("unsigned long"));}
+|			VOID_T {$$=new GRL::GRLType(GRL::GRLType::VOID);}
+|			BOOL_T {$$=new GRL::GRLType(GRL::GRLType::BOOL);}
+|			FLOAT_T {$$=new GRL::GRLType(GRL::GRLType::FLOAT);}
+|			DOUBLE_T {$$=new GRL::GRLType(GRL::GRLType::DOUBLE);}
+|			BYTE_T {$$=new GRL::GRLType(GRL::GRLType::BYTE);}
+|			CHAR_T {$$=new GRL::GRLType(GRL::GRLType::CHAR);}
+|			SHORT_T {$$=new GRL::GRLType(GRL::GRLType::SHORT);}
+|			INT_T {$$=new GRL::GRLType(GRL::GRLType::INT);}
+|			LONG_T {$$=new GRL::GRLType(GRL::GRLType::LONG);}
+|			UNSIGNED BYTE_T {$$=new GRL::GRLType(GRL::GRLType::BYTE,true);}
+|			UNSIGNED SHORT_T {$$=new GRL::GRLType(GRL::GRLType::SHORT,true);}
+|			UNSIGNED INT_T {$$=new GRL::GRLType(GRL::GRLType::INT,true);}
+|			UNSIGNED LONG_T {$$=new GRL::GRLType(GRL::GRLType::LONG,true);}
 ;
 
 modifiers:		publicity_mod other_mod
