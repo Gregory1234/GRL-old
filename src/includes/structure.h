@@ -7,7 +7,7 @@
 namespace GRL{
         struct Class{
                 std::string name;
-                Class(std::string&);
+                Class(const std::string&);
         };
         struct GRLType{
                 enum primitives{
@@ -18,15 +18,15 @@ namespace GRL{
                         Class *c;
                 };
                 bool isPrimitive;
-                GRLType(Class&);
+                GRLType(const Class&);
                 GRLType(primitives);
                 GRLType(primitives,bool);
         };
         struct Function{
                 std::string name;
                 GRLType ret;
-                Function(std::string&);
-                Function(std::string&,GRLType&);
+                Function(const std::string&);
+                Function(const std::string&,const GRLType&);
         };
         enum class IdentifierType{
                 FUNCTION,CLASS,NOTHING
@@ -35,7 +35,9 @@ namespace GRL{
                 std::vector<Class> classes;
                 std::vector<Function> functions;
                 short stage = GRL_STAGE_COMPILING;
-                IdentifierType getIdentifier(std::string&);
+                IdentifierType getIdentifierType(const std::string&);
+                Function* getFunction(const std::string&);
+                Class* getClass(const std::string&);
         };
 }
 

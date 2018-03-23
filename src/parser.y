@@ -80,7 +80,7 @@ fielddef:		modifiers typeident IDENT ';'
 
 typeident:		IDENT {
 	if(context.stage==GRL_STAGE_COMPILING){
-		if(context.getIdentifier(*$1)!=GRL::IdentifierType::CLASS){
+		if(context.getIdentifierType(*$1)!=GRL::IdentifierType::CLASS){
 			YYERROR;
 		}
 	}
@@ -121,11 +121,11 @@ expression:		funcall
 ;
 funcall:		IDENT '(' funcallargs ')' {
 	if(context.stage==GRL_STAGE_COMPILING){
-		if(context.getIdentifier(*$1,GRL::Identifier::FUNCTION).type==GRL::Identifier::NOTHING){
+		if(context.getIdentifierType(*$1)!=GRL::IdentifierType::FUNCTION){
 			YYERROR;
 		}
 	}
-	$$=(GRL::Function*)context.getIdentifier(*$1,GRL::Identifier::FUNCTION).owner;
+	$$=context.getFunction(*$1);
 }
 ;
 funcallargs:		noemptyfuncallargs
