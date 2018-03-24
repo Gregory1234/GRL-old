@@ -18,6 +18,7 @@ namespace GRL{
                         Class *c;
                 };
                 bool isPrimitive;
+                bool nosign;
                 GRLType(const Class&);
                 GRLType(primitives);
                 GRLType(primitives,bool);
