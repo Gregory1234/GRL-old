@@ -3,6 +3,7 @@
 #include<fstream>
 #include<inputs.h>
 #include<structure.h>
+#include<context.h>
 #include<errors.h>
 extern FILE* yyin;
 extern int yyparse();

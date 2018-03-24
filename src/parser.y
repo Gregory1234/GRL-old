@@ -1,12 +1,14 @@
 %defines
 %code requires{
 #include<structure.h>
+#include<context.h>
 extern GRL::CompilerContext context;
 }
 %{
 #include<string>
 #include<iostream>
-void yyerror(const char*);
+#include<context.h>
+#include<errors.h>
 int yylex();
 #define YYDEBUG 1
 %}

@@ -2,8 +2,7 @@
 #include "parser.h"
 extern int yylineno;
 #include <string>
-void yyerror(const char*);
-void lexerror(const char*);
+#include <errors.h>
 %}
 %option noyywrap
 %%

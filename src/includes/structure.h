@@ -2,8 +2,6 @@
 #define GRL_STRUCTURE_H
 #include<string>
 #include<vector>
-#define GRL_STAGE_COMPILING     0
-#define GRL_STAGE_GLOBALS       1
 namespace GRL{
         struct Class{
                 std::string name;
@@ -31,15 +29,6 @@ namespace GRL{
         };
         enum class IdentifierType{
                 FUNCTION,CLASS,NOTHING
-        };
-        struct CompilerContext{
-                std::vector<Class> classes;
-                std::vector<Function> functions;
-                short stage = GRL_STAGE_COMPILING;
-                IdentifierType getIdentifierType(const std::string&);
-                Function* getFunction(const std::string&);
-                Class* getClass(const std::string&);
-        	void findGlobals(const std::string&);
         };
 }
 
