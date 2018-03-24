@@ -38,6 +38,7 @@ namespace GRL{
                 IdentifierType getIdentifierType(const std::string&);
                 Function* getFunction(const std::string&);
                 Class* getClass(const std::string&);
+        	void findGlobals(const std::string&);
         };
 }
 

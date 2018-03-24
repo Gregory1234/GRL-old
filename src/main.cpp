@@ -3,6 +3,7 @@
 #include<fstream>
 #include<inputs.h>
 #include<structure.h>
+#include<errors.h>
 extern FILE* yyin;
 extern int yyparse();
 extern int yylineno;
@@ -23,7 +24,7 @@ int main(int argc,char* argv[]){
 	context = GRL::CompilerContext();
 	getDefault(context);
 	fn = in.in;
-	context.scanForGlobals(fn);
+	context.findGlobals(fn);
 	if(haserrors)
 		return haserrors;
 	yyin=fopen(fn.c_str(),"r");
@@ -35,7 +36,7 @@ int main(int argc,char* argv[]){
 
 void yyerror(const char* msg){
 	cout << "\033[1;31mparsing error:\033[0m in " << fn << " line " << yylineno << endl << msg << endl;
-	haserrors=context.globalfinding?GLOBAL_FINDING_PARSER_ERROR:PARSING_ERROR;
+	haserrors=context.stage==GRL_STAGE_GLOBALS?GLOBAL_FINDING_PARSER_ERROR:PARSING_ERROR;
 }
 void lexerror(const char* msg){
 	cout << "\033[1;31mlexing error:\033[0m in " << fn << " line " << yylineno << endl << msg << endl;
