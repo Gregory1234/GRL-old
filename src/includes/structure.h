@@ -19,7 +19,7 @@ namespace GRL{
                 };
                 bool isPrimitive;
                 bool nosign;
-                GRLType(const Class&);
+                GRLType(Class*);
                 GRLType(primitives);
                 GRLType(primitives,bool);
         };
