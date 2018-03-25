@@ -12,5 +12,5 @@ script:
  - bin/grl examples/test3.grl -d
  - bin/grl examples/wtest1.grl -e 1
  - bin/grl examples/wtest1.grl -d -e 1
- - bin/grl examples/wtest2.grl -e 1
- - bin/grl examples/wtest2.grl -d -e 1
+ - bin/grl examples/wtest2.grl -e 3
+ - bin/grl examples/wtest2.grl -d -e 3
