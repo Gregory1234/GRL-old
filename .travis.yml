@@ -3,10 +3,14 @@ language: cpp
 script:
  - make bin/grl
  - bin/grl main.grl
- - bin/grl examples/test1.grl
- - bin/grl examples/test2.grl
- - bin/grl examples/test3.grl -e 1
  - bin/grl main.grl -d
+ - bin/grl examples/test1.grl
  - bin/grl examples/test1.grl -d
+ - bin/grl examples/test2.grl
  - bin/grl examples/test2.grl -d
- - bin/grl examples/test3.grl -d -e 1
+ - bin/grl examples/test3.grl
+ - bin/grl examples/test3.grl -d
+ - bin/grl examples/wtest1.grl -e 1
+ - bin/grl examples/wtest1.grl -d -e 1
+ - bin/grl examples/wtest2.grl -e 1
+ - bin/grl examples/wtest2.grl -d -e 1

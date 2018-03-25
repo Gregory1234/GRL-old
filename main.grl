@@ -1,5 +1,8 @@
 class main{
 	void main(String[] args){
-		println("Hello");
+		hello();
+	}
+	void hello(){
+
 	}
 }
