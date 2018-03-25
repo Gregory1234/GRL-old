@@ -1,8 +1,7 @@
 #include <inputs.h>
 #include <iostream>
 #include <string>
-extern int haserrors;
-extern void inerror(const char*);
+#include <errors.h>
 GRL::input::input(int argc,char* argv[]){
 	debug=false;
 	out="";

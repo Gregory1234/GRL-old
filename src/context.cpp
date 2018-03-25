@@ -2,7 +2,11 @@
 #include<errors.h>
 #include<iostream>
 #include<fstream>
+#include<stdio.h>
 
+extern int yyparse();
+extern FILE* yyin;
+extern std::string currentfn;
 GRL::IdentifierType GRL::CompilerContext::getIdentifierType(const std::string& s){
         if(getFunction(s)!=nullptr)
                 return IdentifierType::FUNCTION;
@@ -26,8 +30,13 @@ GRL::Class* GRL::CompilerContext::getClass(const std::string& s){
 }
 void GRL::CompilerContext::findGlobals(const std::string& fn){
         std::ifstream mainfs;
-
-	//scanFile(fn);
+        //
+        currentfn=fn;
+	stage=GRL_STAGE_GLOBALS;
+	yyin=fopen(fn.c_str(),"r");
+	yyparse();
+	stage=GRL_STAGE_COMPILING;
+        //
 	mainfs.open(fn.c_str());
 	char c;
 	int l = 0;

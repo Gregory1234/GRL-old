@@ -67,7 +67,7 @@ codeblock:		explicitcodeblock
 explicitcodeblock:	'{' codelines '}'
 ;
 codelines:		codelines codeline
-|			codeline
+|			%empty
 ;
 fundefargs:		%empty
 |			noemptyfundefargs
@@ -83,7 +83,7 @@ fielddef:		modifiers typeident IDENT ';'
 typeident:		IDENT {
 	if(context.stage==GRL_STAGE_COMPILING){
 		if(context.getIdentifierType(*$1)!=GRL::IdentifierType::CLASS){
-			YYERROR;
+			yyerror((std::string("Unknown identifier: ") + *$1).c_str());
 		}
 	}
 	$$=new GRL::GRLType(GRL::GRLType::UNDEFINED);
@@ -124,7 +124,7 @@ expression:		funcall
 funcall:		IDENT '(' funcallargs ')' {
 	if(context.stage==GRL_STAGE_COMPILING){
 		if(context.getIdentifierType(*$1)!=GRL::IdentifierType::FUNCTION){
-			YYERROR;
+			yyerror((std::string("Unknown identifier: ") + *$1).c_str());
 		}
 	}
 	$$=context.getFunction(*$1);

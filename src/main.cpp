@@ -12,7 +12,7 @@ extern void getDefault(GRL::CompilerContext&);
 using namespace std;
 int haserrors = 0;
 
-string fn;
+string currentfn;
 extern int yydebug;
 GRL::CompilerContext context;
 
@@ -24,8 +24,8 @@ int main(int argc,char* argv[]){
 		yydebug=1;
 	context = GRL::CompilerContext();
 	getDefault(context);
-	fn = in.in;
-	context.findGlobals(fn);
+	currentfn = in.in;
+	context.findGlobals(currentfn);
 	if(haserrors){
 		if(in.experr==0)
 			return haserrors;
@@ -34,11 +34,10 @@ int main(int argc,char* argv[]){
 		else
 			return haserrors;
 	}
-	yyin=fopen(fn.c_str(),"r");
 	//cout << ifstream(argv[1]).rdbuf() << endl;
-	fn = in.in;
+	currentfn = in.in;
+	yyin=fopen(currentfn.c_str(),"r");
 	yyparse();
-	cout << in.experr << " " << haserrors << endl;
 	if(in.experr==0)
 		return haserrors;
 	else if(haserrors==in.experr)
@@ -50,11 +49,11 @@ int main(int argc,char* argv[]){
 }
 
 void yyerror(const char* msg){
-	cout << "\033[1;31mparsing error:\033[0m in " << fn << " line " << yylineno << endl << msg << endl;
+	cout << "\033[1;31mparsing error:\033[0m in " << currentfn << " line " << yylineno << endl << msg << endl;
 	haserrors=context.stage==GRL_STAGE_GLOBALS?GLOBAL_FINDING_PARSER_ERROR:PARSING_ERROR;
 }
 void lexerror(const char* msg){
-	cout << "\033[1;31mlexing error:\033[0m in " << fn << " line " << yylineno << endl << msg << endl;
+	cout << "\033[1;31mlexing error:\033[0m in " << currentfn << " line " << yylineno << endl << msg << endl;
 	haserrors=LEXER_ERROR;
 }
 void inerror(const char* msg){
