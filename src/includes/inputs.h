@@ -5,6 +5,7 @@ namespace GRL{
 	struct input{
 		std::string in;
 		std::string out;
+		int experr;
 		bool debug;
 		std::string format;
 		input(int argc,char* argv[]);

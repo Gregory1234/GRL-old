@@ -26,13 +26,27 @@ int main(int argc,char* argv[]){
 	getDefault(context);
 	fn = in.in;
 	context.findGlobals(fn);
-	if(haserrors)
-		return haserrors;
+	if(haserrors){
+		if(in.experr==0)
+			return haserrors;
+		else if(haserrors==in.experr)
+			return 0;
+		else
+			return haserrors;
+	}
 	yyin=fopen(fn.c_str(),"r");
 	//cout << ifstream(argv[1]).rdbuf() << endl;
 	fn = in.in;
 	yyparse();
-	return haserrors;
+	cout << in.experr << " " << haserrors << endl;
+	if(in.experr==0)
+		return haserrors;
+	else if(haserrors==in.experr)
+		return 0;
+	else if(haserrors==0)
+		return UNDETECTED_ERROR_ERROR;
+	else
+		return haserrors;
 }
 
 void yyerror(const char* msg){

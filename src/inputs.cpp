@@ -8,10 +8,12 @@ GRL::input::input(int argc,char* argv[]){
 	out="";
 	in="";
 	format="";
+	experr=0;
 	bool hasdebug = false;
 	bool hasout = false;
 	bool hasin = false;
 	bool hasformat = false;
+	bool hasexperr = false;
 	for(int i = 1;i<argc;i++){
 		if(argv[i][0]=='-'){
 			switch(argv[i][1]){
@@ -32,6 +34,12 @@ GRL::input::input(int argc,char* argv[]){
 					inerror("debug was enabled twice");
 				hasdebug=true;
 				debug = true;
+				break;
+			case 'e':
+				if(hasexperr)
+					inerror("format was specified twice");
+				hasexperr=true;
+				experr = atoi(argv[++i]);
 				break;
 			default:
 				inerror((std::string("unknown flag -") + argv[i][1]).c_str());

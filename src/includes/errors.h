@@ -5,8 +5,10 @@
 #define PARSING_ERROR 3
 #define LEXER_ERROR 4
 #define INPUT_ERROR 5
+#define UNDETECTED_ERROR_ERROR 6
 
 void yyerror(const char*);
 void lexerror(const char*);
 void inerror(const char*);
+extern int haserrors;
 #endif //GRL_ERRORS_H
