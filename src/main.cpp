@@ -57,10 +57,10 @@ void lexerror(const char* msg){
 	haserrors=LEXER_ERROR;
 }
 void inerror(const char* msg){
-	std::cout << "\033[1;31minput error\033[0m" << std::endl << msg << std::endl;
+	cout << "\033[1;31minput error\033[0m" << endl << msg << endl;
 	haserrors = INPUT_ERROR;
 }
 void othererror(const char* type,const char* msg,int ret){
-	std::cout << "\033[1;31m" << type << "\033[0m" << std::endl << msg << std::endl;
+	cout << "\033[1;31m" << type << " error" << "\033[0m in " << currentfn << " line " << yylineno << endl << msg << std::endl;
 	haserrors = ret;
 }
