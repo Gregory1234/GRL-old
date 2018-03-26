@@ -7,38 +7,76 @@
 extern int yyparse();
 extern FILE* yyin;
 extern std::string currentfn;
-GRL::IdentifierType GRL::CompilerContext::getIdentifierType(const std::string& s){
+GRL::IdentifierType GRL::ContextLayer::getIdentifierType(const std::string& s){
         if(getFunction(s)!=nullptr)
                 return IdentifierType::FUNCTION;
         else if(getClass(s)!=nullptr)
                 return IdentifierType::CLASS;
         return IdentifierType::NOTHING;
 }
-GRL::Function* GRL::CompilerContext::getFunction(const std::string& s){
+GRL::Function* GRL::ContextLayer::getFunction(const std::string& s){
         for(auto& f: functions){
                 if(f.name==s)
                         return &f;
         }
         return nullptr;
 }
-GRL::Class* GRL::CompilerContext::getClass(const std::string& s){
+GRL::Class* GRL::ContextLayer::getClass(const std::string& s){
         for(auto& c: classes){
                 if(c.name==s)
                         return &c;
         }
         return nullptr;
 }
-void GRL::CompilerContext::addFunction(const GRL::Function& f){
+void GRL::ContextLayer::addFunction(const GRL::Function& f){
         if(getFunction(f.name)==nullptr)
                 functions.push_back(f);
         else
                 yyerror((std::string("ambiguous function: ")+f.name).c_str());
 }
-void GRL::CompilerContext::addClass(const GRL::Class& c){
+void GRL::ContextLayer::addClass(const GRL::Class& c){
         if(getClass(c.name)==nullptr)
                 classes.push_back(c);
         else
                 yyerror((std::string("ambiguous class: ")+c.name).c_str());
+}
+
+
+GRL::IdentifierType GRL::CompilerContext::getIdentifierType(const std::string& s){
+        for(auto& l: layers){
+                auto r = l.getIdentifierType(s);
+                if(r!=IdentifierType::NOTHING)
+                        return r;
+        }
+        return IdentifierType::NOTHING;
+}
+GRL::Function* GRL::CompilerContext::getFunction(const std::string& s){
+        for(auto& l: layers){
+                auto r = l.getFunction(s);
+                if(r!=nullptr)
+                        return r;
+        }
+        return nullptr;
+}
+GRL::Class* GRL::CompilerContext::getClass(const std::string& s){
+        for(auto& l: layers){
+                auto r = l.getClass(s);
+                if(r!=nullptr)
+                        return r;
+        }
+        return nullptr;
+}
+void GRL::CompilerContext::addFunction(const GRL::Function& f){
+        layers.back().addFunction(f);
+}
+void GRL::CompilerContext::addClass(const GRL::Class& c){
+        layers.back().addClass(c);
+}
+void GRL::CompilerContext::operator++(){
+        layers.emplace_back();
+}
+void GRL::CompilerContext::operator--(){
+        layers.pop_back();
 }
 void GRL::CompilerContext::findGlobals(const std::string& fn){
         std::ifstream mainfs;
@@ -47,15 +85,6 @@ void GRL::CompilerContext::findGlobals(const std::string& fn){
 	stage=GRL_STAGE_GLOBALS;
 	yyin=fopen(fn.c_str(),"r");
 	yyparse();
-        //
-        for(auto& c1: classes){
-                for(auto& c2: classes){
-                        if(&c1!=&c2&&c1.name==c2.name)
-                                yyerror((std::string("ambiguous class: ")+c1.name).c_str());
-                }
-        }
-
-        //
 	stage=GRL_STAGE_COMPILING;
         //
 	mainfs.open(fn.c_str());

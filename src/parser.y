@@ -61,8 +61,8 @@ fundef:			modifiers typeident IDENT '(' fundefargs ')' {
 	}
 } explicitcodeblock {$$=new GRL::Function(*$3,*$2);}
 ;
-codeblock:		explicitcodeblock
-|			codeline
+codeblock:		{++context;} explicitcodeblock {--context;}
+|			{++context;} codeline {--context;}
 ;
 explicitcodeblock:	'{' codelines '}'
 ;

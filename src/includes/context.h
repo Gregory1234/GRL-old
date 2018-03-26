@@ -5,9 +5,18 @@
 #define GRL_STAGE_COMPILING     0
 #define GRL_STAGE_GLOBALS       1
 namespace GRL{
-        class CompilerContext{
+        class ContextLayer{
                 std::vector<Class> classes;
                 std::vector<Function> functions;
+        public:
+                IdentifierType getIdentifierType(const std::string&);
+                Function* getFunction(const std::string&);
+                Class* getClass(const std::string&);
+                void addFunction(const Function&);
+                void addClass(const Class&);
+        };
+        class CompilerContext{
+                std::vector<ContextLayer> layers{ContextLayer()};
         public:
                 short stage = GRL_STAGE_COMPILING;
                 IdentifierType getIdentifierType(const std::string&);
@@ -16,6 +25,9 @@ namespace GRL{
                 void addFunction(const Function&);
                 void addClass(const Class&);
         	void findGlobals(const std::string&);
+                void operator++();
+                void operator--();
+
         };
 }
 #endif //GRL_CONTEXT_H
