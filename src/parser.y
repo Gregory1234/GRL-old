@@ -115,6 +115,23 @@ other_mod:		%empty
 ;
 
 codeline:		expression ';'
+|			typeident IDENT {
+	if(context.stage==GRL_STAGE_GLOBALS) {
+		context.addVariable(GRL::Variable(*$2,*$1));
+	}
+} ';'
+|			typeident IDENT {
+	if(context.stage==GRL_STAGE_GLOBALS) {
+		context.addVariable(GRL::Variable(*$2,*$1));
+	}
+} '=' expression ';'
+|			IDENT {
+	if(context.stage==GRL_STAGE_COMPILING){
+		if(context.getIdentifierType(*$1)!=GRL::IdentifierType::VARIABLE){
+			yyerror((std::string("Unknown identifier: ") + *$1).c_str());
+		}
+	}
+} '=' expression ';'
 ;
 expression:		funcall
 |			STRING_C

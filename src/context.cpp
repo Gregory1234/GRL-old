@@ -8,7 +8,9 @@ extern int yyparse();
 extern FILE* yyin;
 extern std::string currentfn;
 GRL::IdentifierType GRL::ContextLayer::getIdentifierType(const std::string& s){
-        if(getFunction(s)!=nullptr)
+        if(getVariable(s)!=nullptr)
+                return IdentifierType::VARIABLE;
+        else if(getFunction(s)!=nullptr)
                 return IdentifierType::FUNCTION;
         else if(getClass(s)!=nullptr)
                 return IdentifierType::CLASS;
@@ -28,6 +30,13 @@ GRL::Class* GRL::ContextLayer::getClass(const std::string& s){
         }
         return nullptr;
 }
+GRL::Variable* GRL::ContextLayer::getVariable(const std::string& s){
+        for(auto& v: variables){
+                if(v.name==s)
+                        return &v;
+        }
+        return nullptr;
+}
 void GRL::ContextLayer::addFunction(const GRL::Function& f){
         if(getFunction(f.name)==nullptr)
                 functions.push_back(f);
@@ -39,6 +48,12 @@ void GRL::ContextLayer::addClass(const GRL::Class& c){
                 classes.push_back(c);
         else
                 yyerror((std::string("ambiguous class: ")+c.name).c_str());
+}
+void GRL::ContextLayer::addVariable(const GRL::Variable& v){
+        if(getVariable(v.name)==nullptr)
+                variables.push_back(v);
+        else
+                yyerror((std::string("ambiguous variable: ")+v.name).c_str());
 }
 
 
@@ -66,11 +81,22 @@ GRL::Class* GRL::CompilerContext::getClass(const std::string& s){
         }
         return nullptr;
 }
+GRL::Variable* GRL::CompilerContext::getVariable(const std::string& s){
+        for(auto& l: layers){
+                auto r = l.getVariable(s);
+                if(r!=nullptr)
+                        return r;
+        }
+        return nullptr;
+}
 void GRL::CompilerContext::addFunction(const GRL::Function& f){
         layers.back().addFunction(f);
 }
 void GRL::CompilerContext::addClass(const GRL::Class& c){
         layers.back().addClass(c);
+}
+void GRL::CompilerContext::addVariable(const GRL::Variable& v){
+        layers.back().addVariable(v);
 }
 void GRL::CompilerContext::operator++(){
         layers.emplace_back();

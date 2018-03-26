@@ -17,3 +17,6 @@ GRL::Function::Function(const std::string& name): name(name), ret(GRL::GRLType::
 GRL::Function::Function(const std::string& name,const GRLType& ret): name(name), ret(ret){
 
 }
+GRL::Variable::Variable(const std::string& name,const GRLType& ret): name(name), ret(ret){
+
+}

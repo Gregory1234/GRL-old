@@ -27,8 +27,13 @@ namespace GRL{
                 Function(const std::string&);
                 Function(const std::string&,const GRLType&);
         };
+        struct Variable{
+                std::string name;
+                GRLType ret;
+                Variable(const std::string&,const GRLType&);
+        };
         enum class IdentifierType{
-                FUNCTION,CLASS,NOTHING
+                FUNCTION,CLASS,VARIABLE,NOTHING
         };
 }
 

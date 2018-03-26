@@ -1,9 +1,7 @@
-class main{
+class test4{
 	void main(String[] args){
 		int a;
 		int b = 0;
-		String c;
-		c = "hello";
 		a = 58;
 		hello();
 	}

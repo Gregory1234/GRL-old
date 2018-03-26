@@ -8,12 +8,15 @@ namespace GRL{
         class ContextLayer{
                 std::vector<Class> classes;
                 std::vector<Function> functions;
+                std::vector<Variable> variables;
         public:
                 IdentifierType getIdentifierType(const std::string&);
                 Function* getFunction(const std::string&);
                 Class* getClass(const std::string&);
+                Variable* getVariable(const std::string&);
                 void addFunction(const Function&);
                 void addClass(const Class&);
+                void addVariable(const Variable&);
         };
         class CompilerContext{
                 std::vector<ContextLayer> layers{ContextLayer()};
@@ -22,8 +25,10 @@ namespace GRL{
                 IdentifierType getIdentifierType(const std::string&);
                 Function* getFunction(const std::string&);
                 Class* getClass(const std::string&);
+                Variable* getVariable(const std::string&);
                 void addFunction(const Function&);
                 void addClass(const Class&);
+                void addVariable(const Variable&);
         	void findGlobals(const std::string&);
                 void operator++();
                 void operator--();
