@@ -1,0 +1,11 @@
+class wtest3{
+	void hello(){
+
+	}
+	void main(String[] args){
+		hello();
+	}
+	void hello(){
+
+	}
+}

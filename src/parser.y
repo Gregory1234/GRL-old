@@ -46,7 +46,7 @@ input:			classdef END
 
 classdef:		CLASS IDENT {
 	if(context.stage==GRL_STAGE_GLOBALS) {
-		context.classes.push_back(GRL::Class(*$2));
+		context.addClass(GRL::Class(*$2));
 	}
 } '{' classcont '}'
 |			NOCLASS '{' classcont '}'
@@ -57,7 +57,7 @@ classcont:		%empty
 ;
 fundef:			modifiers typeident IDENT '(' fundefargs ')' {
 	if(context.stage==GRL_STAGE_GLOBALS) {
-		context.functions.push_back(GRL::Function(*$3,*$2));
+		context.addFunction(GRL::Function(*$3,*$2));
 	}
 } explicitcodeblock {$$=new GRL::Function(*$3,*$2);}
 ;
