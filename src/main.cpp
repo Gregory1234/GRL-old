@@ -1,4 +1,5 @@
 #include <fstream>
+#include <iostream>
 #include <inputs.h>
 #include <structure.h>
 #include <context.h>
@@ -11,11 +12,7 @@ string currentfn;
 
 int main(int argc, char* argv[]){
 	GRL::input in(argc,argv);
-	if(in.experr==0)
-		return haserrors;
-	else if(haserrors==in.experr)
-		return 0;
-	else if(haserrors)
+	if(haserrors)
 		return haserrors;
 	if(in.debug)
 		yydebug=1;
