@@ -10,8 +10,8 @@ extern int yylineno;
 "class"				return CLASS;
 "noclass"			return NOCLASS;
 
-("("|")"|"{"|"}"|"["|"]")       return yytext[0];
-("<"|">"|";"|"=")               return yytext[0];
+("("|")"|"{"|"}"|"["|"]")	return yytext[0];
+("<"|">"|";"|"="|".")		return yytext[0];
 
 "void"				return VOID_T;
 ("byte"|"int8")			return BYTE_T;

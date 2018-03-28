@@ -125,6 +125,15 @@ codeline:		expression ';'
 } '=' expression ';'
 ;
 expression:		funcall
+|			IDENT {
+	if(context.stage==GRL_STAGE_COMPILING){
+		if(context.getIdentifierType(*$1)!=GRL::IdentifierType::VARIABLE){
+			yyerror((std::string("unknown identifier: ") + *$1).c_str());
+		}
+	}
+}
+|			expression '.' funcall
+|			expression '.' IDENT
 |			STRING_C
 |			CHAR_C
 |			INT_C

@@ -1,6 +1,6 @@
 class main{
 	void main(String[] args){
-		int a;
-		a = 58;
+		String a;
+		println(a);
 	}
 }
