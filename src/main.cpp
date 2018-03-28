@@ -19,9 +19,9 @@ int main(int argc, char* argv[]){
 	getDefault(context);
 	currentfn = in.in;
 	context.findGlobals(currentfn);
-	if(in.experr==0)
+	if(haserrors&&in.experr==0)
 		return haserrors;
-	else if(haserrors==in.experr)
+	else if(haserrors&&haserrors==in.experr)
 		return 0;
 	else if(haserrors)
 		return haserrors;
