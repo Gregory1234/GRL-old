@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <errors.h>
-GRL::input::input(int argc,char* argv[]){
+GRL::input::input(int argc, char* argv[]){
 	debug=false;
 	out="";
 	in="";

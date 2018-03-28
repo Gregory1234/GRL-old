@@ -1,21 +1,16 @@
 %defines
 %code requires{
-#include<structure.h>
-#include<context.h>
-extern GRL::CompilerContext context;
+#include <structure.h>
+#include <context.h>
 }
 %{
-#include<string>
-#include<iostream>
-#include<context.h>
-#include<errors.h>
+#include <string>
+#include <iostream>
+#include <context.h>
+#include <errors.h>
 int yylex();
 #define YYDEBUG 1
 %}
-%code requires{
-
-#include<string>
-}
 %union{
 	GRL::GRLType* type;
 	std::string* str;

@@ -14,26 +14,26 @@ int haserrors = 0;
 
 string currentfn;
 extern int yydebug;
-GRL::CompilerContext context;
 
-int main(int argc,char* argv[]){
+int main(int argc, char* argv[]){
 	GRL::input in(argc,argv);
-	if(haserrors)
+	if(in.experr==0)
+		return haserrors;
+	else if(haserrors==in.experr)
+		return 0;
+	else if(haserrors)
 		return haserrors;
 	if(in.debug)
 		yydebug=1;
-	context = GRL::CompilerContext();
 	getDefault(context);
 	currentfn = in.in;
 	context.findGlobals(currentfn);
-	if(haserrors){
-		if(in.experr==0)
-			return haserrors;
-		else if(haserrors==in.experr)
-			return 0;
-		else
-			return haserrors;
-	}
+	if(in.experr==0)
+		return haserrors;
+	else if(haserrors==in.experr)
+		return 0;
+	else if(haserrors)
+		return haserrors;
 	//cout << ifstream(argv[1]).rdbuf() << endl;
 	currentfn = in.in;
 	yyin=fopen(currentfn.c_str(),"r");
@@ -60,7 +60,7 @@ void inerror(const char* msg){
 	cout << "\033[1;31minput error\033[0m" << endl << msg << endl;
 	haserrors = INPUT_ERROR;
 }
-void othererror(const char* type,const char* msg,int ret){
+void othererror(const char* type, const char* msg, int ret){
 	cout << "\033[1;31m" << type << " error" << "\033[0m in " << currentfn << " line " << yylineno << endl << msg << std::endl;
 	haserrors = ret;
 }

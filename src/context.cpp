@@ -1,12 +1,15 @@
-#include<context.h>
-#include<errors.h>
-#include<iostream>
-#include<fstream>
-#include<stdio.h>
+#include <context.h>
+#include <errors.h>
+#include <iostream>
+#include <fstream>
+#include <stdio.h>
 
 extern int yyparse();
 extern FILE* yyin;
 extern std::string currentfn;
+
+GRL::CompilerContext context;
+
 GRL::IdentifierType GRL::ContextLayer::getIdentifierType(const std::string& s){
         if(getVariable(s)!=nullptr)
                 return IdentifierType::VARIABLE;

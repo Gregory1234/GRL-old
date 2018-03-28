@@ -1,7 +1,7 @@
 #ifndef GRL_CONTEXT_H
 #define GRL_CONTEXT_H
-#include<structure.h>
-#include<string.h>
+#include <structure.h>
+#include <string.h>
 #define GRL_STAGE_COMPILING     0
 #define GRL_STAGE_GLOBALS       1
 namespace GRL{
@@ -35,4 +35,5 @@ namespace GRL{
 
         };
 }
+extern GRL::CompilerContext context;
 #endif //GRL_CONTEXT_H

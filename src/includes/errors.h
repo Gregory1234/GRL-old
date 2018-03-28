@@ -10,6 +10,6 @@
 void yyerror(const char*);
 void lexerror(const char*);
 void inerror(const char*);
-void othererror(const char*,const char*, int);
+void othererror(const char*, const char*, int);
 extern int haserrors;
 #endif //GRL_ERRORS_H

@@ -1,6 +1,6 @@
 #ifndef GRL_INPUT_H
 #define GRL_INPUT_H
-#include<string>
+#include <string>
 namespace GRL{
 	struct input{
 		std::string in;
@@ -8,7 +8,7 @@ namespace GRL{
 		int experr;
 		bool debug;
 		std::string format;
-		input(int argc,char* argv[]);
+		input(int argc, char* argv[]);
 	};
 }
 

@@ -1,7 +1,7 @@
 #ifndef GRL_STRUCTURE_H
 #define GRL_STRUCTURE_H
-#include<string>
-#include<vector>
+#include <string>
+#include <vector>
 namespace GRL{
         struct Class{
                 std::string name;
@@ -25,12 +25,12 @@ namespace GRL{
                 std::string name;
                 GRLType ret;
                 Function(const std::string&);
-                Function(const std::string&,const GRLType&);
+                Function(const std::string&, const GRLType&);
         };
         struct Variable{
                 std::string name;
                 GRLType ret;
-                Variable(const std::string&,const GRLType&);
+                Variable(const std::string&, const GRLType&);
         };
         enum class IdentifierType{
                 FUNCTION,CLASS,VARIABLE,NOTHING
