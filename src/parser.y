@@ -2,11 +2,11 @@
 %code requires{
 #include <structure.h>
 #include <context.h>
+#include <output.h>
 }
 %{
 #include <string>
 #include <iostream>
-#include <context.h>
 #include <errors.h>
 int yylex();
 #define YYDEBUG 1
@@ -17,7 +17,9 @@ int yylex();
 	int numI;
 	char numC;
 	GRL::Function* fun;
+	GRL::Expression* expr;
 }
+%define parse.error verbose
 
 %token CLASS "class" NOCLASS "noclass"
 %token END 0 "end of file"
@@ -28,10 +30,11 @@ int yylex();
 %token<str> IDENT "identifier"
 %token<numI> INT_C "integer constant"
 %token<numC> CHAR_C "char constant"
+
 %type<type> typeident
 %type<fun> fundef
-%type<fun> funcall
-%define parse.error verbose
+%type<expr> expression
+
 %start input
 
 %%
@@ -124,7 +127,13 @@ codeline:		expression ';'
 	}
 } '=' expression ';'
 ;
-expression:		funcall
+expression:		IDENT '(' funcallargs ')' {
+	if(context.stage==GRL_STAGE_COMPILING){
+		if(context.getIdentifierType(*$1)!=GRL::IdentifierType::FUNCTION){
+			yyerror((std::string("unknown identifier: ") + *$1).c_str());
+		}
+	}
+}
 |			IDENT {
 	if(context.stage==GRL_STAGE_COMPILING){
 		if(context.getIdentifierType(*$1)!=GRL::IdentifierType::VARIABLE){
@@ -132,20 +141,11 @@ expression:		funcall
 		}
 	}
 }
-|			expression '.' funcall
+|			expression '.' IDENT '(' funcallargs ')'
 |			expression '.' IDENT
 |			STRING_C
 |			CHAR_C
 |			INT_C
-;
-funcall:		IDENT '(' funcallargs ')' {
-	if(context.stage==GRL_STAGE_COMPILING){
-		if(context.getIdentifierType(*$1)!=GRL::IdentifierType::FUNCTION){
-			yyerror((std::string("unknown identifier: ") + *$1).c_str());
-		}
-	}
-	$$=context.getFunction(*$1);
-}
 ;
 funcallargs:		noemptyfuncallargs
 |			%empty
