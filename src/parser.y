@@ -30,6 +30,7 @@ int yylex();
 %token<str> IDENT "identifier"
 %token<numI> INT_C "integer constant"
 %token<numC> CHAR_C "char constant"
+%token IF "if" FOR "for" WHILE "while"
 
 %type<type> typeident
 %type<fun> fundef
@@ -126,6 +127,8 @@ codeline:		expression ';'
 		}
 	}
 } '=' expression ';'
+|			"if" '(' expression ')' codeblock
+|			"while" '(' expression ')' codeblock
 ;
 expression:		IDENT '(' funcallargs ')' {
 	if(context.stage==GRL_STAGE_COMPILING){
