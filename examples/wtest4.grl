@@ -1,9 +1,0 @@
-class wtest4{
-	void main(String[] args){
-		a = 58;
-		hello();
-	}
-	void hello(){
-
-	}
-}

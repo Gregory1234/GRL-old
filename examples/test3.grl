@@ -1,8 +1,0 @@
-class test3{
-	void main(String[] args){
-		hello();
-	}
-	void hello(){
-
-	}
-}

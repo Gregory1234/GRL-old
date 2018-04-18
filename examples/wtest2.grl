@@ -1,5 +1,0 @@
-class wtest2{
-	void main(String[] args){
-		hello();
-	}
-}
