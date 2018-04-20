@@ -25,6 +25,12 @@ using token = GRL::Parser::token;
             yylval = lval;
 %}
 
+"class"				{return token::CLASS;}
+
+[a-zA-Z_][a-zA-Z1-9_]*		{return token::IDENTIFIER;}
+
+[{}()\[\]<>]			{return yytext[0];}
+
 [ \t]				{}
 \n				{loc->lines();}
 .				{GRL::lexerror(*loc,"unexpected character!");}
