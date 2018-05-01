@@ -36,8 +36,9 @@
 %define parse.assert
 
 %token END 0 "end of file"
-%token CLASS "class"
+%token CLASS "class" NOCLASS "noclass"
 %token IDENTIFIER "identifier"
+%token VOID_T "void" INT_T "int"
 
 %locations
 %start input
@@ -45,10 +46,29 @@
 %%
 
 input: 		class_def
+;
+
+class_def:	"class" IDENTIFIER '{' class_con '}'
+|		"noclass" '{' class_con '}'
+;
+
+class_con:	class_con fun_def
+|		class_con var_def
 |		%empty
 ;
 
-class_def:	"class" IDENTIFIER '{' '}'
+var_def:	mods type IDENTIFIER ';'
+;
+
+fun_def:	mods type IDENTIFIER '(' ')' ';'
+|		mods type IDENTIFIER '(' ')' '{' '}'
+;
+
+mods:		%empty
+;
+
+type:		VOID_T
+|		INT_T
 ;
 
 %%

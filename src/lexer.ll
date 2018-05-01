@@ -26,10 +26,16 @@ using token = GRL::Parser::token;
 %}
 
 "class"				{return token::CLASS;}
+"noclass"			{return token::NOCLASS;}
+
+"int"				{return token::INT_T;}
+"void"  			{return token::VOID_T;}
 
 [a-zA-Z_][a-zA-Z1-9_]*		{return token::IDENTIFIER;}
 
 [{}()\[\]<>]			{return yytext[0];}
+
+[;=+\-*/]			{return yytext[0];}
 
 [ \t]				{}
 \n				{loc->lines();}
