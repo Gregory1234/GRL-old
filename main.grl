@@ -1,8 +1,7 @@
+
+
 class main{
-	void main(String[] args){
-		bool a;
-		if(a){
-			println("hello");
-		}
+	void main(){
+		
 	}
 }

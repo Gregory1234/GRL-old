@@ -1,56 +1,33 @@
 #include <inputs.h>
+#include <errors.h>
 #include <iostream>
 #include <string>
-#include <errors.h>
-GRL::input::input(int argc, char* argv[]){
-	debug=false;
-	out="";
-	in="";
-	format="";
-	experr=0;
-	bool hasdebug = false;
-	bool hasout = false;
-	bool hasin = false;
-	bool hasformat = false;
-	bool hasexperr = false;
-	for(int i = 1;i<argc;i++){
-		if(argv[i][0]=='-'){
-			switch(argv[i][1]){
-			case 'o':
-				if(hasout)
-					inerror("output was specified twice");
-				hasout=true;
-				out = argv[++i];
-				break;
-			case 'f':
-				if(hasformat)
-					inerror("format was specified twice");
-				hasformat=true;
-				format = argv[++i];
-				break;
-			case 'd':
-				if(hasdebug)
-					inerror("debug was enabled twice");
-				hasdebug=true;
-				debug = true;
-				break;
-			case 'e':
-				if(hasexperr)
-					inerror("format was specified twice");
-				hasexperr=true;
-				experr = atoi(argv[++i]);
-				break;
-			default:
-				inerror((std::string("unknown flag -") + argv[i][1]).c_str());
-				break;
-			}
-		}else{
-			if(hasin)
-				inerror("input was specified twice");
-			hasin=true;
-			in=argv[i];
-		}
-	}
-	if(!hasin)
-		inerror("input wan't specified");
+#include <cstring>
+
+#include <driver.h>
+
+extern int yydebug;
+
+void GRL::input(const int argc, const char* argv[]){
+  bool hasinfile=false;
+  std::string infile;
+  bool hasoutfile=false;
+  std::string outfile;
+  bool debug=false;
+  for(int i = 1;i<argc;i++){
+    const char* v = (i==argc-1||strlen(argv[i])>2?argv[i]+2:argv[i+1]);
+    if(argv[i][0]=='-')
+      switch(argv[i][1]){
+
+      }
+    else{
+      if(hasinfile){
+        inerror("mutiple input files");
+      }
+      hasinfile=true;
+      infile=argv[i];
+    }
+  }
+  GRL::Driver driver;
+  driver.parse(argv[1]);
 }

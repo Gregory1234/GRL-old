@@ -1,24 +1,35 @@
-#include <iostream>
 #include <errors.h>
-#include <context.h>
-int haserrors = 0;
-extern int yylineno;
-using namespace std;
-extern string currentfn;
-
-void yyerror(const char* msg){
-	cout << "\033[1;31mparsing error:\033[0m in " << currentfn << " line " << yylineno << endl << msg << endl;
-	haserrors=context.stage==GRL_STAGE_GLOBALS?GLOBAL_FINDING_PARSER_ERROR:PARSING_ERROR;
-}
-void lexerror(const char* msg){
-	cout << "\033[1;31mlexing error:\033[0m in " << currentfn << " line " << yylineno << endl << msg << endl;
-	haserrors=LEXER_ERROR;
-}
-void inerror(const char* msg){
-	cout << "\033[1;31minput error\033[0m" << endl << msg << endl;
-	haserrors = INPUT_ERROR;
-}
-void othererror(const char* type, const char* msg, int ret){
-	cout << "\033[1;31m" << type << " error" << "\033[0m in " << currentfn << " line " << yylineno << endl << msg << std::endl;
-	haserrors = ret;
+#include <iostream>
+#include <sstream>
+namespace GRL{
+	std::string formatLocation(const Parser::location_type& l){
+		std::ostringstream s;
+		s<<l;
+		std::string str = s.str();
+		std::replace(str.begin(),str.end(),'.',':');
+		return str;
+	}
+	void error(const std::string& t, const std::string& m){
+		std::cout << "\033[1;31m" << t << " error:\033[0m " << std::endl << m << std::endl;
+	}
+	void error(const Parser::location_type& l, const std::string& t, const std::string& m){
+		std::cout << "\033[1;31m" << t << " error:\033[0m at " << formatLocation(l) << std::endl << m << std::endl;
+	}
+	void lexerror(const Parser::location_type& l, const std::string& m){
+		error(l, "lexing", m);
+	}
+	void prserror(const Parser::location_type& l, const std::string& m){
+		error(l, "parsing", m);
+	}
+	void pprserror(const std::string& m){
+		error("pre-parsing", m);
+	}
+	void usage(){
+	  std::cout << "Usage: grl file [-d]" << std::endl;
+	}
+	void inerror(const std::string& m){
+		error("input", m);
+		usage();
+		exit(EXIT_FAILURE);
+	}
 }

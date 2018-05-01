@@ -1,15 +1,14 @@
-#ifndef GRL_ERRORS_H
-#define GRL_ERRORS_H
-#define PRE_PARSING_ERROR 1
-#define GLOBAL_FINDING_PARSER_ERROR 2
-#define PARSING_ERROR 3
-#define LEXER_ERROR 4
-#define INPUT_ERROR 5
-#define UNDETECTED_ERROR_ERROR 6
+#ifndef GRL_ERROR_H
+#define GRL_ERROR_H
+#include <string>
+#include <parser.hh>
+namespace GRL{
+	void error(const std::string&, const std::string&);
+	void error(const Parser::location_type&, const std::string&, const std::string&);
+	void lexerror(const Parser::location_type&, const std::string&);
+	void prserror(const Parser::location_type&, const std::string&);
+	void pprserror(const std::string&);
+	void inerror(const std::string&);
+}
 
-void yyerror(const char*);
-void lexerror(const char*);
-void inerror(const char*);
-void othererror(const char*, const char*, int);
-extern int haserrors;
-#endif //GRL_ERRORS_H
+#endif //GRL_ERROR_H
