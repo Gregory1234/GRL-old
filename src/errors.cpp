@@ -24,7 +24,12 @@ namespace GRL{
 	void pprserror(const std::string& m){
 		error("pre-parsing", m);
 	}
+	void usage(){
+	  std::cout << "Usage: grl file [-d]" << std::endl;
+	}
 	void inerror(const std::string& m){
 		error("input", m);
+		usage();
+		exit(EXIT_FAILURE);
 	}
 }
