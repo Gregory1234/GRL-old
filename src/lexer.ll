@@ -28,8 +28,21 @@ using token = GRL::Parser::token;
 "class"				{return token::CLASS;}
 "noclass"			{return token::NOCLASS;}
 
-"int"				{return token::INT_T;}
 "void"  			{return token::VOID_T;}
+"bool"  			{return token::BOOL_T;}
+"char"  			{return token::CHAR_T;}
+"byte"  			{return token::BYTE_T;}
+"int8"  			{return token::INT8_T;}
+"short"  			{return token::SHORT_T;}
+"word"  			{return token::WORD_T;}
+"int16"  			{return token::INT16_T;}
+"int"  			        {return token::INT_T;}
+"int32"	                        {return token::INT32_T;}
+"long"  			{return token::LONG_T;}
+"int64"  			{return token::INT64_T;}
+"float"  			{return token::FLOAT_T;}
+"double"  			{return token::DOUBLE_T;}
+"quadruple"  			{return token::QUADRUPLE_T;}
 
 [a-zA-Z_][a-zA-Z1-9_]*		{return token::IDENTIFIER;}
 

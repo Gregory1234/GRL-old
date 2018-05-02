@@ -38,7 +38,10 @@
 %token END 0 "end of file"
 %token CLASS "class" NOCLASS "noclass"
 %token IDENTIFIER "identifier"
-%token VOID_T "void" INT_T "int"
+%token VOID_T "void" CHAR_T "char" BOOL_T "bool"
+%token BYTE_T "byte" INT8_T "int8" SHORT_T "short" WORD_T "word" INT16_T "int16"
+%token INT_T "int" INT32_T "int32" LONG_T "long" INT64_T "int64"
+%token FLOAT_T "float" DOUBLE_T "double" QUADRUPLE_T "quadruple"
 
 %locations
 %start input
@@ -68,7 +71,22 @@ mods:		%empty
 ;
 
 type:		VOID_T
+|		BOOL_T
+|		CHAR_T
+|		BYTE_T
+|		INT8_T
+|		SHORT_T
+|		WORD_T
+|		INT16_T
 |		INT_T
+|		DOUBLE_T WORD_T
+|		INT32_T
+|		LONG_T
+|		QUADRUPLE_T WORD_T
+|		INT64_T
+|		FLOAT_T
+|		DOUBLE_T
+|		IDENTIFIER
 ;
 
 %%
