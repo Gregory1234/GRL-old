@@ -3,13 +3,10 @@
 
 #include <errors.h>
 #include <scanner.h>
-#undef  YY_DECL
-#define YY_DECL int GRL::Scanner::yylex( GRL::Parser::semantic_type * const lval, GRL::Parser::location_type *location )
 
 using token = GRL::Parser::token;
 #define yyterminate() return token::END
 #define YY_NO_UNISTD_H
-#define YY_USER_ACTION loc->step(); loc->columns(yyleng);
 
 //yylval->build<std::string>(yytext);
 %}
@@ -22,7 +19,7 @@ using token = GRL::Parser::token;
 
 %%
 %{
-            yylval = lval;
+#define YY_USER_ACTION yylloc->columns(yyleng);
 %}
 
 "class"				{return token::CLASS;}
@@ -54,7 +51,7 @@ using token = GRL::Parser::token;
 
 [;=+\-*/,]			{return yytext[0];}
 
-[ \t]				{}
-\n				{loc->lines();}
-.				{GRL::lexerror(*loc,std::string("unexpected character: ")+yytext[0]);}
+[ \t]				{yylloc->step();}
+\n				{yylloc->lines();}
+.				{GRL::lexerror(*yylloc,std::string("unexpected character: ")+yytext[0]);}
 %%

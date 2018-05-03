@@ -5,6 +5,7 @@
 %define parse.error verbose
 %define api.namespace {GRL}
 %define parser_class_name {Parser}
+%locations
 
 %code requires{
 	namespace GRL {
@@ -15,7 +16,6 @@
 	#ifndef YY_NULLPTR
 	#define YY_NULLPTR nullptr
 	#endif
-
 }
 
 %parse-param {Scanner& scanner}
@@ -46,7 +46,6 @@
 %token INT_C "integer constant"
 %token DOUBLE_C "double constant"
 
-%locations
 %start input
 
 %%
