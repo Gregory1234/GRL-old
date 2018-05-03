@@ -19,7 +19,7 @@ using token = GRL::Parser::token;
 
 %%
 %{
-#define YY_USER_ACTION yylloc->columns(yyleng);
+#define YY_USER_ACTION yylloc->step();yylloc->columns(yyleng);
 %}
 
 "class"				{return token::CLASS;}
