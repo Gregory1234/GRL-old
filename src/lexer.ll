@@ -44,13 +44,17 @@ using token = GRL::Parser::token;
 "double"  			{return token::DOUBLE_T;}
 "quadruple"  			{return token::QUADRUPLE_T;}
 
+\".*\"  	               	{return token::STRING_C;}
+-?(?:[1-9][0-9]*|0)  	               	{return token::INT_C;}
+(?:-?(?:[1-9][0-9]*|0))?\.[0-9]*  	{return token::DOUBLE_C;}
+
 [a-zA-Z_][a-zA-Z1-9_]*		{return token::IDENTIFIER;}
 
 [{}()\[\]<>]			{return yytext[0];}
 
-[;=+\-*/]			{return yytext[0];}
+[;=+\-*/,]			{return yytext[0];}
 
 [ \t]				{}
 \n				{loc->lines();}
-.				{GRL::lexerror(*loc,"unexpected character!");}
+.				{GRL::lexerror(*loc,std::string("unexpected character: ")+yytext[0]);}
 %%

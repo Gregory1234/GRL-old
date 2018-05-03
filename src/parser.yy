@@ -42,6 +42,9 @@
 %token BYTE_T "byte" INT8_T "int8" SHORT_T "short" WORD_T "word" INT16_T "int16"
 %token INT_T "int" INT32_T "int32" LONG_T "long" INT64_T "int64"
 %token FLOAT_T "float" DOUBLE_T "double" QUADRUPLE_T "quadruple"
+%token STRING_C "string constant"
+%token INT_C "integer constant"
+%token DOUBLE_C "double constant"
 
 %locations
 %start input
@@ -61,10 +64,47 @@ class_con:	class_con fun_def
 ;
 
 var_def:	mods type IDENTIFIER ';'
+|		mods type IDENTIFIER '=' expression ';'
 ;
 
-fun_def:	mods type IDENTIFIER '(' ')' ';'
-|		mods type IDENTIFIER '(' ')' '{' '}'
+fun_def:	mods type IDENTIFIER '(' params ')' ';'
+|		mods type IDENTIFIER '(' params ')' compound_statement
+;
+
+params:		%empty
+|		params_helper
+;
+
+params_helper:	type ',' params_helper
+|		type IDENTIFIER ',' params_helper
+|		type
+|		type IDENTIFIER
+;
+
+statement:	expression ';'
+|		compound_statement
+;
+
+compound_statement:	'{' statement_list '}'
+;
+
+statement_list:	statement statement_list
+|		%empty
+;
+
+
+expression:	IDENTIFIER '(' params_call ')'
+|		STRING_C
+|		INT_C
+|		DOUBLE_C
+;
+
+params_call:	%empty
+|		params_helper_call
+;
+
+params_helper_call:	expression ',' params_helper_call
+|		expression
 ;
 
 mods:		%empty

@@ -1,7 +1,10 @@
 
 
 class main{
-	quadruple word main(){
-
+	quadruple word main(int a, float b, String){
+		println("a",0.3);
+		{
+			exit(0);
+		}
 	}
 }
