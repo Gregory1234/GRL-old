@@ -2,9 +2,6 @@
 
 class main{
 	quadruple word main(int a, float b, String){
-		if(a==b&&!(a+b^3))
-			while(a|b==c&d||(e^^f))
-				for(int i = 0;g instanceof Test;i=i+1)
-					Test h = c==d?g:j;
+		cast (String) bla;
 	}
 }

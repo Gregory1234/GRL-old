@@ -40,6 +40,7 @@ using token = GRL::Parser::token;
 "try"				{return token::TRY;}
 "catch"				{return token::CATCH;}
 "throw"				{return token::THROW;}
+"cast"				{return token::CAST;}
 
 "void"  			{return token::VOID_T;}
 "bool"  			{return token::BOOL_T;}

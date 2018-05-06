@@ -16,7 +16,6 @@
 	#ifndef YY_NULLPTR
 	#define YY_NULLPTR nullptr
 	#endif
-	#define YYDEBUG 1
 }
 
 %parse-param {Scanner& scanner}
@@ -63,8 +62,7 @@
 %token DOUBLE_C "double constant"
 %token OR "||" AND "&&" XOR "^^" EQUALS "==" NOTEQUALS "!="
 %token IF "if" FOR "for" WHILE "while" DO "do" TRY "try" CATCH "catch"
-%token INSTANCEOF "instanceof" THROW "throw"
-
+%token INSTANCEOF "instanceof" THROW "throw" CAST "cast"
 %start input
 
 %%
@@ -133,6 +131,7 @@ expression:	IDENTIFIER '(' params_call ')'
 |		expression '-' expression
 |		expression '*' expression
 |		expression '/' expression
+|		"cast" '(' type ')' expression %prec '!'
 |		'(' expression ')'
 |		expression '&' expression
 |		expression '|' expression
