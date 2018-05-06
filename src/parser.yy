@@ -16,6 +16,7 @@
 	#ifndef YY_NULLPTR
 	#define YY_NULLPTR nullptr
 	#endif
+	#define YYDEBUG 1
 }
 
 %parse-param {Scanner& scanner}
@@ -35,6 +36,21 @@
 %define api.value.type variant
 %define parse.assert
 
+%right '?' ':'
+%left "||"
+%left "^^"
+%left "&&"
+%left "==" "!="
+%left '+' '-'
+%left '|'
+%left '^'
+%left '&'
+%left '*' '/'
+%left "instanceof"
+%right '!'
+%left '('
+
+
 %token END 0 "end of file"
 %token CLASS "class" NOCLASS "noclass"
 %token IDENTIFIER "identifier"
@@ -46,7 +62,8 @@
 %token INT_C "integer constant"
 %token DOUBLE_C "double constant"
 %token OR "||" AND "&&" XOR "^^" EQUALS "==" NOTEQUALS "!="
-%token IF "if" FOR "for" WHILE "while" DO "do"
+%token IF "if" FOR "for" WHILE "while" DO "do" TRY "try" CATCH "catch"
+%token INSTANCEOF "instanceof" THROW "throw"
 
 %start input
 
@@ -83,12 +100,15 @@ params_helper:	type ',' params_helper
 ;
 
 statement:	';'
-|		expression ';'
+|		expression_or_var ';'
 |		compound_statement
 |		"if" '(' expression ')' statement
-|		"for" '(' expression ';' expression ';' expression ')' statement
+|		"for" '(' expression_or_var ';' expression ';' expression_or_var ')' statement
+|		"for" '(' type IDENTIFIER ':' expression ')' statement
 |		"while" '(' expression ')' statement
 |		"do" statement "while" '(' expression ')' ';'
+|		"try" statement "catch" '(' expression_or_var ')' statement
+|		"throw" expression ';'
 ;
 
 compound_statement:	'{' statement_list '}'
@@ -98,6 +118,11 @@ statement_list:	statement statement_list
 |		%empty
 ;
 
+expression_or_var:	expression
+|		IDENTIFIER '=' expression
+|		type IDENTIFIER
+|		type IDENTIFIER '=' expression
+;
 
 expression:	IDENTIFIER '(' params_call ')'
 |		IDENTIFIER
@@ -109,7 +134,6 @@ expression:	IDENTIFIER '(' params_call ')'
 |		expression '*' expression
 |		expression '/' expression
 |		'(' expression ')'
-|		'(' type ')' expression
 |		expression '&' expression
 |		expression '|' expression
 |		expression '^' expression
@@ -119,6 +143,8 @@ expression:	IDENTIFIER '(' params_call ')'
 |		expression "^^" expression
 |		expression "==" expression
 |		expression "!=" expression
+|		expression '?' expression ':' expression
+|		expression "instanceof" type
 ;
 
 params_call:	%empty

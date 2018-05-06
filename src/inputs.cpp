@@ -3,10 +3,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-
 #include <driver.h>
-
-extern int yydebug;
 
 void GRL::input(const int argc, const char* argv[]){
   bool hasinfile=false;

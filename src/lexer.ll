@@ -36,6 +36,10 @@ using token = GRL::Parser::token;
 "for"				{return token::FOR;}
 "while"				{return token::WHILE;}
 "do"				{return token::DO;}
+"instanceof"			{return token::INSTANCEOF;}
+"try"				{return token::TRY;}
+"catch"				{return token::CATCH;}
+"throw"				{return token::THROW;}
 
 "void"  			{return token::VOID_T;}
 "bool"  			{return token::BOOL_T;}
@@ -61,7 +65,7 @@ using token = GRL::Parser::token;
 
 [{}()\[\]<>]			{return yytext[0];}
 
-[;=+\-*/,|&^!]			{return yytext[0];}
+[;=+\-*/,|&^!?:]		{return yytext[0];}
 
 [ \t]				{yylloc->step();}
 \n				{yylloc->lines();}
