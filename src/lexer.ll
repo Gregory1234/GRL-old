@@ -19,6 +19,7 @@ using token = GRL::Parser::token;
 
 %%
 %{
+#undef YY_USER_ACTION
 #define YY_USER_ACTION yylloc->step();yylloc->columns(yyleng);
 %}
 
