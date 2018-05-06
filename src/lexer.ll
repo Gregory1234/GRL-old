@@ -26,6 +26,17 @@ using token = GRL::Parser::token;
 "class"				{return token::CLASS;}
 "noclass"			{return token::NOCLASS;}
 
+"||"				{return token::OR;}
+"&&"				{return token::AND;}
+"^^"				{return token::XOR;}
+"=="				{return token::EQUALS;}
+"!="				{return token::NOTEQUALS;}
+
+"if"				{return token::IF;}
+"for"				{return token::FOR;}
+"while"				{return token::WHILE;}
+"do"				{return token::DO;}
+
 "void"  			{return token::VOID_T;}
 "bool"  			{return token::BOOL_T;}
 "char"  			{return token::CHAR_T;}
@@ -50,7 +61,7 @@ using token = GRL::Parser::token;
 
 [{}()\[\]<>]			{return yytext[0];}
 
-[;=+\-*/,]			{return yytext[0];}
+[;=+\-*/,|&^!]			{return yytext[0];}
 
 [ \t]				{yylloc->step();}
 \n				{yylloc->lines();}

@@ -45,6 +45,8 @@
 %token STRING_C "string constant"
 %token INT_C "integer constant"
 %token DOUBLE_C "double constant"
+%token OR "||" AND "&&" XOR "^^" EQUALS "==" NOTEQUALS "!="
+%token IF "if" FOR "for" WHILE "while" DO "do"
 
 %start input
 
@@ -80,8 +82,13 @@ params_helper:	type ',' params_helper
 |		type IDENTIFIER
 ;
 
-statement:	expression ';'
+statement:	';'
+|		expression ';'
 |		compound_statement
+|		"if" '(' expression ')' statement
+|		"for" '(' expression ';' expression ';' expression ')' statement
+|		"while" '(' expression ')' statement
+|		"do" statement "while" '(' expression ')' ';'
 ;
 
 compound_statement:	'{' statement_list '}'
@@ -93,9 +100,25 @@ statement_list:	statement statement_list
 
 
 expression:	IDENTIFIER '(' params_call ')'
+|		IDENTIFIER
 |		STRING_C
 |		INT_C
 |		DOUBLE_C
+|		expression '+' expression
+|		expression '-' expression
+|		expression '*' expression
+|		expression '/' expression
+|		'(' expression ')'
+|		'(' type ')' expression
+|		expression '&' expression
+|		expression '|' expression
+|		expression '^' expression
+|		'!' expression
+|		expression "&&" expression
+|		expression "||" expression
+|		expression "^^" expression
+|		expression "==" expression
+|		expression "!=" expression
 ;
 
 params_call:	%empty
