@@ -1,2 +1,4 @@
 *.ll linguist-language=Lex
 *.yy linguist-language=Bison
+*.ll linguist-vendored=Lex
+*.yy linguist-vendored=Bison
