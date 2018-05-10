@@ -1,0 +1,2 @@
+*.ll linguist-language=Lex
+*.yy linguist-language=Bison
